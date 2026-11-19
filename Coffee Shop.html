@@ -1,0 +1,811 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Coffee Shop</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,700;1,800&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme:dark;
+  --bg:#63301f;
+  --nav:#22140f;
+  --search:#5a3622;
+  --tan:#ac7a52;
+  --cream:#d9c9bf;
+  --gold:#f3d27f;
+  --arc:#b5714f;
+  --white:#fff;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Poppins',system-ui,sans-serif;background:var(--bg);color:var(--white);min-height:100vh;overflow-x:hidden}
+button{font-family:inherit;cursor:pointer;border:0;color:inherit}
+a{color:inherit;text-decoration:none}
+
+/* ---------- NAV ---------- */
+.topbar{position:fixed;top:18px;left:28px;right:28px;z-index:50;display:flex;gap:12px;align-items:stretch}
+.nav{flex:1;background:var(--nav);border-radius:20px;height:54px;display:flex;align-items:center;padding:0 22px 0 66px;gap:6px;min-width:0}
+.nav a{font-size:17px;font-weight:300;color:#bfb0a6;padding:0 16px;white-space:nowrap;transition:color .2s}
+.nav a:hover{color:#fff}
+.nav a.active{color:#fff;font-weight:800;font-style:italic;font-size:20px}
+.nav .search{margin-left:auto;width:310px;max-width:34%;height:32px;background:var(--search);border-radius:20px;border:0;padding:0 18px;font:700 12.5px 'Poppins';color:#e6d6cb;outline:none}
+.nav .search::placeholder{color:#d8c6ba;opacity:1;text-transform:uppercase}
+.contact{background:var(--nav);border-radius:20px;width:198px;font-weight:700;font-size:18px;color:#cdbdb3;letter-spacing:.2px;text-transform:uppercase;transition:color .2s}
+.contact:hover{color:#fff}
+.menu-toggle{display:none;background:var(--nav);border-radius:14px;width:54px;font-size:22px}
+
+/* ---------- PAGES ---------- */
+.page{display:none;min-height:100vh}
+.page.show{display:block;animation:fade .35s ease}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* ---------- HOME ---------- */
+#home{position:relative;overflow:hidden;background:#2a1a12}
+.scene{position:absolute;inset:0;width:100%;height:100%}
+#home .shade{position:absolute;inset:0;background:linear-gradient(90deg,rgba(20,10,5,.35),rgba(20,10,5,0) 60%)}
+.hero{position:relative;z-index:2;padding:170px 60px 60px;min-height:100vh;display:flex;flex-direction:column;justify-content:center}
+.hero h1{font-size:clamp(46px,7.4vw,92px);font-weight:700;line-height:1.02;max-width:720px;background:linear-gradient(180deg,#ffe08f 0%,#e0b25f 38%,#a8702f 70%,#c07a3a 100%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 4px 10px rgba(0,0,0,.35))}
+.hero p{margin-top:26px;font-size:clamp(18px,2vw,25px);font-weight:400;line-height:1.55;max-width:600px;color:#c99655;text-shadow:0 2px 8px rgba(0,0,0,.6)}
+.hero .cta{margin-top:34px;align-self:flex-start;background:var(--nav);color:#d8c8be;font-weight:700;font-size:20px;text-transform:uppercase;padding:18px 24px;border-radius:18px;transition:transform .2s,color .2s}
+.hero .cta:hover{transform:translateY(-3px);color:#fff}
+.features{position:absolute;right:74px;bottom:176px;display:flex;gap:23px;z-index:3}
+.feature{width:147px;height:144px;background:var(--nav);border-radius:30px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;font-weight:700;font-size:15px;text-transform:uppercase;color:#d8c8be;transition:transform .25s}
+.feature:hover{transform:translateY(-6px)}
+.feature svg{width:64px;height:64px}
+
+/* ---------- MENU ---------- */
+#menu{padding-left:154px;position:relative}
+.sidebar{position:fixed;left:0;top:0;bottom:0;width:154px;z-index:40;display:flex;flex-direction:column;padding-top:112px;background:
+  repeating-linear-gradient(90deg,rgba(0,0,0,.18) 0 2px,transparent 2px 7px),
+  repeating-linear-gradient(0deg,rgba(255,255,255,.03) 0 1px,transparent 1px 5px),
+  linear-gradient(90deg,#3b2417,#4a2c1c 40%,#2f1c12)}
+.sidebar button{flex:1;background:none;font-size:17px;font-weight:300;color:#d7c5ba;text-transform:uppercase;line-height:1.35;padding:0 8px;border-bottom:3px solid #6b3a29;transition:background .2s}
+.sidebar button:hover{background:rgba(255,255,255,.07)}
+.sidebar button.active{font-weight:700;color:#fff;background:rgba(0,0,0,.18)}
+.sidebar button:first-child{flex:.0 0 auto}
+.menu-body{padding:128px 36px 40px 30px;max-width:1240px}
+.menu-title{font-size:15px;color:#e0cfc4;margin-bottom:6px;letter-spacing:.5px;display:none}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px 20px}
+.item{display:flex;flex-direction:column;align-items:center;text-align:center;cursor:pointer;padding:8px 6px 14px;border-radius:20px;transition:background .2s,transform .2s;position:relative;background:none;color:inherit}
+.item:hover{background:rgba(0,0,0,.14);transform:translateY(-4px)}
+.item .pic{width:100%;max-width:210px;aspect-ratio:200/270;display:flex;align-items:flex-end;justify-content:center}
+.item .pic img,.item .pic svg{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 8px 10px rgba(0,0,0,.25))}
+img.bgimg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center}
+.item .price{font-size:21px;font-weight:400;margin-top:2px}
+.item .name{font-size:21px;font-weight:700;line-height:1.15}
+.item .add{margin-top:8px;font-size:12px;font-weight:600;background:var(--nav);color:#e6d6cb;padding:6px 14px;border-radius:12px;opacity:0;transform:translateY(4px);transition:.2s}
+.item:hover .add,.item:focus-visible .add{opacity:1;transform:none}
+.empty{grid-column:1/-1;text-align:center;font-size:20px;padding:80px 0;color:#e0cfc4}
+
+/* cart */
+.cart-fab{position:fixed;right:24px;bottom:24px;z-index:60;background:var(--nav);border-radius:50px;padding:14px 22px;font-weight:700;font-size:16px;display:none;align-items:center;gap:10px;box-shadow:0 8px 24px rgba(0,0,0,.4)}
+.cart-fab.on{display:flex}
+.cart-fab .n{background:var(--tan);color:#2a140c;border-radius:50%;min-width:26px;height:26px;display:grid;place-items:center;font-size:14px}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(380px,100%);background:var(--nav);z-index:90;transform:translateX(100%);transition:transform .3s;padding:24px;display:flex;flex-direction:column}
+.drawer.open{transform:none}
+.drawer h3{font-size:22px;margin-bottom:14px}
+.drawer .lines{flex:1;overflow:auto}
+.line{display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid #3a2519}
+.line .nm{flex:1;font-weight:600}
+.line .nm small{display:block;font-weight:300;color:#bfb0a6}
+.qty{display:flex;align-items:center;gap:8px}
+.qty button{width:26px;height:26px;border-radius:50%;background:var(--search);font-weight:700}
+.total{display:flex;justify-content:space-between;font-size:20px;font-weight:700;padding:16px 0}
+.btn{background:var(--tan);color:#2a140c;font-weight:700;border-radius:14px;padding:14px;width:100%;font-size:16px;text-transform:uppercase}
+.btn.ghost{background:var(--search);color:#e6d6cb;margin-top:8px}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:80;display:none}
+.overlay.on{display:block}
+
+/* ---------- REWARDS ---------- */
+#rewards{position:relative;background:var(--bg);overflow:hidden}
+#rewards .doodles{position:absolute;inset:0;width:100%;height:100%;opacity:.55}
+.rw{position:relative;z-index:2;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding-top:130px}
+.gauge{position:relative;width:min(640px,92vw);height:min(430px,60vw);margin-top:6px}
+.gauge svg.arc{position:absolute;inset:0;width:100%;height:100%}
+.gauge .cupimg{position:absolute;left:50%;top:18%;transform:translateX(-50%);width:26%}
+.points{text-align:center;font-size:28px;font-weight:400;line-height:1;margin-top:-20px;text-shadow:0 2px 6px rgba(0,0,0,.4)}
+.points b{display:block;font-weight:400;font-size:28px}
+.checkin{position:relative;width:min(1270px,98vw);margin:auto auto 26px;background:rgba(160,112,74,.92);border-radius:70px;padding:12px 34px 14px;background-image:repeating-linear-gradient(100deg,rgba(255,255,255,.06) 0 3px,transparent 3px 11px)}
+.checkin h4{font-size:19px;font-weight:400;text-transform:uppercase;margin-bottom:4px}
+.days{display:flex;justify-content:space-around;gap:6px}
+.day{display:flex;flex-direction:column;align-items:center;gap:6px;background:none;font-size:20px;text-transform:uppercase;font-weight:400;color:#fff}
+.bean{position:relative;width:82px;height:80px;display:grid;place-items:center;font-size:20px;transition:transform .2s}
+.bean svg{position:absolute;inset:0;width:100%;height:100%}
+.bean span{position:relative;z-index:1}
+.day.today .bean{animation:pulse 1.4s infinite}
+.day.done .bean svg ellipse.b{fill:#e6b36a}
+.day.done .bean span{color:#3a1d10;font-weight:700}
+.day:disabled{cursor:default}
+@keyframes pulse{50%{transform:scale(1.1)}}
+.checkin .hint{text-align:center;font-size:13px;margin-top:2px;color:#f6e6d8;min-height:18px}
+
+/* ---------- ACCOUNT ---------- */
+#account .acc{min-height:100vh;display:flex;flex-direction:column;align-items:center;padding-top:200px}
+.logo-cup{width:172px;margin-bottom:26px}
+.acc h2{font-size:23px;font-weight:700;margin-bottom:14px}
+.phone{position:relative;width:min(590px,92vw);height:46px;background:var(--tan);display:flex;align-items:center;clip-path:polygon(0 4%,1% 0,99% 3%,100% 0,100% 100%,99% 96%,1% 100%,0 96%)}
+.phone .cc{display:flex;align-items:center;gap:10px;padding:0 14px 0 8px;height:100%;background:none;font-weight:700;font-size:18px;position:relative}
+.phone .cc::after{content:"";position:absolute;right:0;top:6px;bottom:6px;width:1px;background:rgba(255,255,255,.7)}
+.flag{width:54px;height:38px;display:block;overflow:hidden;border-radius:2px;display:grid;place-items:center;background:#7a5436;font-size:14px;font-weight:700}
+.phone input{flex:1;min-width:0;height:100%;background:none;border:0;outline:none;padding:0 14px;font:600 20px 'Poppins';color:#fff;letter-spacing:1px}
+.ccmenu{position:absolute;top:46px;left:0;background:var(--nav);border-radius:12px;list-style:none;z-index:5;display:none;overflow:hidden;min-width:210px}
+.ccmenu.on{display:block}
+.ccmenu li{padding:10px 16px;font-size:15px;cursor:pointer;display:flex;gap:10px;align-items:center}
+.ccmenu li:hover{background:var(--search)}
+.divider{display:flex;align-items:center;gap:16px;margin:36px 0 20px;font-weight:600;font-size:14px;width:310px}
+.divider::before,.divider::after{content:"";flex:1;height:1px;background:#fff}
+.chan{display:block;width:275px;height:33px;background:var(--tan);font-size:14px;font-weight:700;text-transform:uppercase;margin-bottom:29px;transition:filter .2s}
+.chan:hover{filter:brightness(1.12)}
+.err{color:#ffb9a3;font-size:14px;min-height:20px;margin-top:8px}
+.codeboxes{display:flex;gap:14px;margin:8px 0 18px}
+.codeboxes input{width:64px;height:70px;background:var(--tan);border:0;border-radius:10px;text-align:center;font:700 32px 'Poppins';color:#fff;outline:none}
+.codeboxes input:focus{box-shadow:0 0 0 3px #f3d27f}
+.acc .sub{font-size:15px;color:#e0cfc4;margin-bottom:6px;text-align:center}
+.acc .linkbtn{background:none;text-decoration:underline;color:#e0cfc4;margin-top:12px;font-size:14px}
+.profile{text-align:center}
+.profile .num{font-size:22px;font-weight:600;margin-bottom:4px}
+.profile .pts{color:#e0cfc4;margin-bottom:22px}
+
+/* ---------- MODAL / TOAST ---------- */
+.modal{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(.95);background:var(--nav);border-radius:24px;padding:28px;width:min(460px,92vw);z-index:100;opacity:0;pointer-events:none;transition:.25s}
+.modal.on{opacity:1;pointer-events:auto;transform:translate(-50%,-50%)}
+.modal h3{font-size:24px;margin-bottom:4px}
+.modal p.s{color:#bfb0a6;font-size:14px;margin-bottom:16px}
+.modal input,.modal textarea{width:100%;background:var(--search);border:0;border-radius:12px;padding:12px 14px;color:#fff;font:500 15px 'Poppins';margin-bottom:12px;outline:none}
+.modal textarea{height:110px;resize:none}
+.modal ::placeholder{color:#c9b6aa}
+.toast{position:fixed;left:50%;bottom:30px;transform:translate(-50%,40px);background:var(--nav);color:#fff;padding:14px 22px;border-radius:14px;z-index:120;opacity:0;transition:.3s;max-width:90vw;text-align:center;font-size:15px;box-shadow:0 8px 24px rgba(0,0,0,.4)}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+
+/* ---------- RESPONSIVE ---------- */
+@media(max-width:1100px){
+  .features{position:relative;right:auto;bottom:auto;margin:30px 0 0;flex-wrap:wrap}
+  .grid{grid-template-columns:repeat(3,1fr)}
+  .nav{padding-left:20px}
+}
+@media(max-width:820px){
+  .topbar{left:10px;right:10px;top:10px;flex-wrap:wrap}
+  .nav{order:1;flex:1 1 100%;flex-wrap:wrap;height:auto;padding:10px 12px;gap:2px;border-radius:18px}
+  .nav a{padding:4px 10px;font-size:15px}
+  .nav a.active{font-size:16px}
+  .nav .search{width:100%;max-width:none;margin:6px 0 2px;order:5}
+  .contact{order:2;width:auto;flex:1 1 100%;height:40px;font-size:15px}
+  .hero{padding:230px 22px 50px}
+  .features .feature{width:30%;min-width:100px;height:120px;font-size:12px}
+  #menu{padding-left:0}
+  .sidebar{position:static;width:100%;flex-direction:row;overflow-x:auto;padding-top:170px;margin-bottom:-120px;position:relative}
+  .sidebar button{flex:0 0 auto;min-width:120px;padding:14px 10px;font-size:14px;border-bottom:0;border-right:3px solid #6b3a29}
+  .menu-body{padding:140px 14px 40px}
+  .grid{grid-template-columns:repeat(2,1fr)}
+  .item .name,.item .price{font-size:17px}
+  .rw{padding-top:200px}
+  .day{font-size:12px}.bean{width:42px;height:42px;font-size:11px}
+  .checkin{border-radius:34px;padding:12px 8px}
+  #account .acc{padding-top:230px}
+}
+</style>
+
+
+<!-- ======= NAV ======= -->
+<header class="topbar">
+  <nav class="nav" id="nav">
+    <a href="#home" data-page="home">HOME</a>
+    <a href="#menu" data-page="menu">MENU</a>
+    <a href="#rewards" data-page="rewards">REWARDS</a>
+    <a href="#account" data-page="account">ACCOUNT</a>
+    <input class="search" id="search" type="search" placeholder="Search..." aria-label="Search menu" autocomplete="off">
+  </nav>
+  <button class="contact" id="contactBtn">Contact Us</button>
+</header>
+
+<!-- ======= HOME ======= -->
+<section class="page" id="home">
+  <svg class="scene" viewBox="0 0 1280 800" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <defs>
+      <pattern id="brick" width="64" height="32" patternUnits="userSpaceOnUse">
+        <rect width="64" height="32" fill="#8a4a30"/>
+        <rect x="1" y="1" width="30" height="14" fill="#b2603b"/><rect x="33" y="1" width="30" height="14" fill="#a65734"/>
+        <rect x="-15" y="17" width="30" height="14" fill="#a85835"/><rect x="17" y="17" width="30" height="14" fill="#b86841"/><rect x="49" y="17" width="30" height="14" fill="#a65734"/>
+      </pattern>
+      <pattern id="floor" width="8" height="8" patternUnits="userSpaceOnUse"><rect width="8" height="8" fill="#0d1226"/><rect width="4" height="4" fill="#151b36"/><rect x="4" y="4" width="4" height="4" fill="#151b36"/></pattern>
+      <linearGradient id="glass" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1a2547"/><stop offset="1" stop-color="#0e1530"/></linearGradient>
+    </defs>
+    <rect width="1280" height="800" fill="#0d1226"/>
+    <rect y="20" width="1280" height="460" fill="url(#brick)"/>
+    <rect width="1280" height="30" fill="#141a34"/>
+    <!-- windows -->
+    <g><rect x="64" y="94" width="210" height="270" fill="#2b1a15"/><rect x="72" y="102" width="194" height="254" fill="url(#glass)"/>
+      <g stroke="#2a3a66" stroke-width="5"><path d="M72 130h194M72 158h194M72 186h194M72 214h194M72 242h194M72 270h194M72 298h194M72 326h194"/></g></g>
+    <g><rect x="990" y="94" width="230" height="270" fill="#2b1a15"/><rect x="998" y="102" width="214" height="254" fill="url(#glass)"/>
+      <path d="M998 300L1212 110v40L998 340z" fill="#2c4a86" opacity=".6"/><path d="M1105 102v254M998 229h214" stroke="#2b1a15" stroke-width="6"/></g>
+    <!-- chalkboard -->
+    <rect x="316" y="90" width="598" height="164" fill="#e8b87c"/><rect x="326" y="96" width="578" height="148" fill="#24292d"/>
+    <text x="345" y="190" font-family="Poppins" font-weight="500" font-size="76" fill="#cfe2f0" font-style="italic" opacity=".9">Coffee</text>
+    <g stroke="#cfe2f0" stroke-width="3" opacity=".85"><path d="M660 130h95M660 158h95M660 186h95M660 214h95"/></g>
+    <g fill="#cfe2f0" opacity=".85"><circle cx="790" cy="130" r="2"/><circle cx="800" cy="130" r="2"/><circle cx="810" cy="130" r="2"/><circle cx="790" cy="158" r="2"/><circle cx="800" cy="158" r="2"/><circle cx="810" cy="158" r="2"/><circle cx="790" cy="186" r="2"/><circle cx="800" cy="186" r="2"/><circle cx="810" cy="186" r="2"/><circle cx="790" cy="214" r="2"/><circle cx="800" cy="214" r="2"/><circle cx="810" cy="214" r="2"/></g>
+    <!-- lamps -->
+    <g fill="#17110d"><path d="M118 94l30-30 30 30z"/><path d="M609 94l40-30 50 30z"/><path d="M1158 94l30-30 30 30z"/></g>
+    <g fill="#f5d36a"><rect x="130" y="100" width="22" height="7"/><rect x="640" y="100" width="22" height="7"/><rect x="1170" y="100" width="22" height="7"/></g>
+    <!-- shelf -->
+    <rect x="330" y="326" width="640" height="18" fill="#e8b87c"/>
+    <g><rect x="700" y="284" width="40" height="44" fill="#d6c7bd"/><rect x="744" y="284" width="42" height="44" fill="#c33a4a"/><rect x="810" y="284" width="40" height="44" fill="#6b3a1f" opacity=".9"/><rect x="866" y="284" width="48" height="44" fill="#d8862a"/></g>
+    <!-- espresso machine -->
+    <rect x="130" y="342" width="172" height="108" fill="#3e5a86"/><rect x="144" y="330" width="146" height="20" fill="#5a7caf"/><rect x="190" y="400" width="40" height="40" fill="#111"/>
+    <!-- bottles -->
+    <rect x="34" y="342" width="22" height="118" rx="4" fill="#e69a2a"/><rect x="68" y="360" width="22" height="100" rx="4" fill="#c7d9a6"/>
+    <rect x="322" y="346" width="40" height="114" fill="#c8c8c8"/><rect x="322" y="346" width="40" height="30" fill="#c63a45"/>
+    <rect x="368" y="346" width="40" height="114" fill="#c8c8c8"/><rect x="368" y="346" width="40" height="30" fill="#2c6fb3"/>
+    <rect x="422" y="424" width="50" height="34" fill="#3bb0d6"/>
+    <!-- pot -->
+    <path d="M492 420q0-48 46-48t46 48v34h-92z" fill="#a8582f"/><path d="M492 380h92v-8h-92z" fill="#1a1a24"/>
+    <path d="M590 395q26 6 12 36" stroke="#1a1a24" stroke-width="8" fill="none"/>
+    <!-- kettle -->
+    <path d="M832 424q0-44 40-44t40 44v30h-80z" fill="#2e3f66"/><path d="M906 400q22 10 6 32" stroke="#2e3f66" stroke-width="8" fill="none"/>
+    <!-- cup, plates, plant -->
+    <rect x="918" y="424" width="56" height="26" fill="#eee"/><rect x="906" y="448" width="82" height="8" fill="#cfd6e4"/>
+    <rect x="1050" y="434" width="86" height="12" fill="#dde4f2"/><rect x="1050" y="446" width="86" height="12" fill="#8fa0c4"/>
+    <rect x="1140" y="420" width="46" height="40" fill="#b8612f"/><g fill="#2f8b45"><path d="M1163 360l20 30-20 30-20-30z"/><path d="M1140 390l23 14-23 16z"/><path d="M1186 390l-23 14 23 16z"/></g>
+    <!-- counter -->
+    <rect y="458" width="1280" height="24" fill="#e08a50"/><rect y="482" width="1280" height="14" fill="#8a4a2a"/>
+    <rect y="496" width="1280" height="234" fill="#7a4326"/>
+    <g fill="#5a2f1a"><rect x="0" y="520" width="130" height="190"/><rect x="230" y="520" width="170" height="190"/><rect x="520" y="520" width="170" height="190"/><rect x="810" y="520" width="170" height="190"/><rect x="1100" y="520" width="180" height="190"/></g>
+    <rect y="730" width="1280" height="70" fill="url(#floor)"/>
+    <!-- stools -->
+    <g fill="#444"><rect x="75" y="536" width="145" height="24" rx="4"/><rect x="310" y="536" width="145" height="24" rx="4"/><rect x="560" y="536" width="145" height="24" rx="4"/><rect x="850" y="536" width="145" height="24" rx="4"/><rect x="1160" y="536" width="145" height="24" rx="4"/></g>
+    <g stroke="#141414" stroke-width="9"><path d="M110 560l-30 190M185 560l30 190M345 560l-30 190M420 560l30 190M595 560l-30 190M670 560l30 190M885 560l-30 190M960 560l30 190M1195 560l-30 190M1270 560l30 190"/></g>
+  </svg>
+  <img class="bgimg" src="images/cafe-background.jpg" alt="" onerror="this.remove()">
+  <div class="shade"></div>
+  <div class="hero">
+    <h1>High Quality, Reliable Coffee Product</h1>
+    <p>Started in 2026, they have been exporting to different parts of the world where top-quality coffee are harvested year-round.</p>
+    <button class="cta" data-go="menu">Get Product</button>
+    <div class="features">
+      <div class="feature">
+        <svg viewBox="0 0 64 64" fill="none"><path d="M32 3l6 4 7-1 3 6 6 3-1 7 4 6-4 6 1 7-6 3-3 6-7-1-6 4-6-4-7 1-3-6-6-3 1-7-4-6 4-6-1-7 6-3 3-6 7 1z" fill="#bcb2ad"/><circle cx="32" cy="32" r="17" fill="#22140f"/><path d="M23 33l6 6 12-13" stroke="#bcb2ad" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        High Quality</div>
+      <div class="feature">
+        <svg viewBox="0 0 64 64"><path d="M32 2c3 17 10 26 28 30-18 4-25 13-28 30-3-17-10-26-28-30C22 28 29 19 32 2z" fill="#c9bfb9"/></svg>
+        Hygienist</div>
+      <div class="feature">
+        <svg viewBox="0 0 64 64" fill="none" stroke="#c8913f" stroke-width="2.6"><circle cx="26" cy="27" r="19"/><path d="M12 38c14 2 22-6 26-22" opacity=".8"/><ellipse cx="41" cy="38" rx="19" ry="12" transform="rotate(-35 41 38)" fill="#22140f"/><path d="M26 49c10-4 22-18 24-28" opacity=".9"/></svg>
+        Tasty</div>
+    </div>
+  </div>
+</section>
+
+<!-- ======= MENU ======= -->
+<section class="page" id="menu">
+  <aside class="sidebar" id="sidebar"></aside>
+  <div class="menu-body">
+    <div class="grid" id="grid"></div>
+  </div>
+</section>
+
+<!-- ======= REWARDS ======= -->
+<section class="page" id="rewards">
+  <svg class="doodles" aria-hidden="true" preserveAspectRatio="xMidYMid slice" viewBox="0 0 1280 800">
+    <defs>
+      <pattern id="dd" width="320" height="260" patternUnits="userSpaceOnUse">
+        <g fill="none" stroke="#c99a7c" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity=".85">
+          <ellipse cx="40" cy="40" rx="20" ry="28" transform="rotate(35 40 40)"/><path d="M26 50q14-18 28-20"/>
+          <path d="M110 30h60l-8 70h-44z"/><path d="M118 30q10-20 22-20t22 20"/>
+          <ellipse cx="250" cy="50" rx="22" ry="30" transform="rotate(-30 250 50)"/><path d="M236 60q14-18 28-22"/>
+          <path d="M30 140l40-30 8 56-44 4z"/><path d="M26 172l42-4"/>
+          <circle cx="140" cy="190" r="28"/><circle cx="140" cy="190" r="14"/>
+          <path d="M215 140l42-8-6 40-40 6z"/>
+          <path d="M280 220l6-12 12 6 6-12 10 8" />
+          <ellipse cx="60" cy="235" rx="16" ry="22" transform="rotate(20 60 235)"/>
+          <path d="M200 225c10-16 20-16 24 0"/>
+        </g>
+      </pattern>
+    </defs>
+    <rect width="1280" height="800" fill="url(#dd)"/>
+  </svg>
+  <div class="rw">
+    <div class="gauge">
+      <svg class="arc" viewBox="0 0 640 430" aria-hidden="true">
+        <path d="M30 430 A290 290 0 0 1 610 430" fill="none" stroke="#b5714f" stroke-width="30" transform="translate(0,-4)"/>
+        <path id="arcFill" d="M30 430 A290 290 0 0 1 610 430" fill="none" stroke="#e0a07a" stroke-width="30" transform="translate(0,-4)" pathLength="100" stroke-dasharray="100 100" stroke-dashoffset="0"/>
+      </svg>
+      <svg class="cupimg" viewBox="0 0 160 260" aria-hidden="true">
+        <path d="M80 40l50-36" stroke="#e7dccb" stroke-width="7" stroke-linecap="round"/>
+        <path d="M80 44V58" stroke="#e7dccb" stroke-width="7"/>
+        <ellipse cx="80" cy="64" rx="70" ry="14" fill="#e7dccb"/><ellipse cx="80" cy="62" rx="52" ry="8" fill="#8a5a36"/>
+        <path d="M14 76h132l-16 170q-50 16-100 0z" fill="#85583a"/>
+        <path d="M14 76h132l-4 38H18z" fill="#946444" opacity=".7"/>
+        <g fill="#f1e6d2"><path d="M44 110q8 40 4 100 10-2 12-20 4-50-6-84z"/><path d="M84 96q10 40 6 96 8 0 10-14 4-46-4-82z"/><ellipse cx="108" cy="120" rx="8" ry="22"/></g>
+        <path d="M22 238q58 14 116 0" stroke="#e7dccb" stroke-width="5" fill="none"/>
+      </svg>
+    </div>
+    <div class="points"><b id="ptsNum">0</b>POINTS</div>
+    <div class="checkin">
+      <h4>Daily Check-in</h4>
+      <div class="days" id="days"></div>
+      <div class="hint" id="hint"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ======= ACCOUNT ======= -->
+<section class="page" id="account">
+  <div class="acc" id="accBox"></div>
+</section>
+
+<!-- ======= CART / MODALS ======= -->
+<button class="cart-fab" id="cartFab" aria-label="Open order"><span>🛒 Order</span><span class="n" id="cartN">0</span></button>
+<aside class="drawer" id="drawer" aria-label="Your order">
+  <h3>Your Order</h3>
+  <div class="lines" id="cartLines"></div>
+  <div class="total"><span>Total</span><span id="cartTotal">₱0</span></div>
+  <button class="btn" id="checkout">Place Order</button>
+  <button class="btn ghost" id="closeDrawer">Keep Browsing</button>
+</aside>
+<div class="overlay" id="overlay"></div>
+
+<div class="modal" id="contactModal" role="dialog" aria-modal="true" aria-label="Contact us">
+  <h3>Contact Us</h3>
+  <p class="s">Questions, orders or partnerships? Send us a message.</p>
+  <form id="contactForm">
+    <input name="name" placeholder="Your name" required>
+    <input name="email" type="email" placeholder="Email address" required>
+    <textarea name="msg" placeholder="Your message" required></textarea>
+    <button class="btn" type="submit">Send Message</button>
+    <button class="btn ghost" type="button" id="closeContact">Cancel</button>
+  </form>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+/* ============ helpers ============ */
+const $ = (s, r=document) => r.querySelector(s);
+const $$ = (s, r=document) => [...r.querySelectorAll(s)];
+const store = {
+  get(k, d){ try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : d }catch(e){ return d } },
+  set(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)) }catch(e){} }
+};
+let toastT;
+function toast(msg){ const t=$('#toast'); t.textContent=msg; t.classList.add('on'); clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove('on'),3800) }
+
+/* ============ router ============ */
+const pages = ['home','menu','rewards','account'];
+function route(){
+  let p = (location.hash || '#home').slice(1);
+  if(!pages.includes(p)) p = 'home';
+  pages.forEach(id => $('#'+id).classList.toggle('show', id===p));
+  $$('#nav a').forEach(a => a.classList.toggle('active', a.dataset.page===p));
+  window.scrollTo(0,0);
+  if(p==='rewards') renderRewards();
+  if(p==='account') renderAccount();
+  if(p==='menu') renderMenu();
+}
+window.addEventListener('hashchange', route);
+document.addEventListener('click', e => {
+  const g = e.target.closest('[data-go]');
+  if(g){ location.hash = '#'+g.dataset.go }
+});
+
+/* ============ MENU DATA ============ */
+/* Frappe items & prices come from the design. Other series are placeholders — edit freely. */
+const SERIES = {
+  'Frappe': [
+    {n:'Caramel Macchiato', p:120, t:'caramel'},
+    {n:'Pure Matcha Latte', p:130, t:'matcha'},
+    {n:'Java Chip', p:130, t:'javachip'},
+    {n:'Vanilla', p:110, t:'vanilla'},
+    {n:'Cookies & Cream', p:120, t:'cookies'},
+    {n:'Strawberry', p:120, t:'strawberry'},
+    {n:'Lotus Biscoff Frappe', p:150, t:'lotus'},
+    {n:'Mocha', p:120, t:'mocha'}
+  ],
+  'Butterpup Series': [
+    {n:'Butterpup Classic', p:130, t:'caramel'},{n:'Butterpup Mocha', p:140, t:'mocha'},
+    {n:'Butterpup Caramel', p:140, t:'lotus'},{n:'Butterpup Vanilla', p:130, t:'vanilla'}
+  ],
+  'Matcha Series': [
+    {n:'Matcha Latte', p:120, t:'matcha'},{n:'Matcha Espresso', p:140, t:'matcha'},
+    {n:'Strawberry Matcha', p:150, t:'strawmatcha'},{n:'Matcha Cream', p:140, t:'matcha'}
+  ],
+  'Mango Series': [
+    {n:'Mango Graham', p:130, t:'mango'},{n:'Mango Smoothie', p:110, t:'mango'},
+    {n:'Mango Cream Cheese', p:140, t:'mango'},{n:'Mango Matcha', p:150, t:'matcha'}
+  ],
+  'Strawberry Series': [
+    {n:'Strawberry Latte', p:120, t:'strawberry'},{n:'Strawberry Cream', p:130, t:'strawberry'},
+    {n:'Strawberry Banana', p:130, t:'strawberry'},{n:'Strawberry Yogurt', p:120, t:'strawberry'}
+  ],
+  'White Choco Series': [
+    {n:'White Choco Latte', p:130, t:'vanilla'},{n:'White Choco Mocha', p:140, t:'mocha'},
+    {n:'White Choco Berry', p:150, t:'strawberry'},{n:'White Choco Cookie', p:140, t:'cookies'}
+  ],
+  'Classic': [
+    {n:'Americano', p:90, t:'americano'},{n:'Cafe Latte', p:110, t:'latte'},
+    {n:'Cappuccino', p:110, t:'latte'},{n:'Spanish Latte', p:120, t:'caramel'}
+  ],
+  'Cookies': [
+    {n:'Cookie Latte', p:130, t:'cookies'},{n:'Oreo Latte', p:130, t:'cookies'},
+    {n:'Choco Chip Latte', p:130, t:'javachip'},{n:'Biscoff Latte', p:150, t:'lotus'}
+  ],
+  'Tea': [
+    {n:'Lemon Iced Tea', p:80, t:'tea'},{n:'Peach Iced Tea', p:90, t:'peach'},
+    {n:'Milk Tea', p:100, t:'milktea'},{n:'Green Tea', p:90, t:'greentea'}
+  ]
+};
+/* cup styles: liquid color(s), topping type */
+const STYLE = {
+  caramel:{a:'#f1e2c8',b:'#d9b98a',top:'whip',dr:'#d68a2b',straw:'#222',cup:'#f4efe6'},
+  matcha:{a:'#5d8a2a',b:'#f2efdc',top:'matcha',dr:'#8fb04a',straw:'#8fb04a',cup:'#f1f3ee',layer:true},
+  javachip:{a:'#8a6a58',b:'#6d4a3a',top:'whip',dr:'#3b2118',straw:'#222',cup:'#eee',speck:'#3b2a22'},
+  vanilla:{a:'#f6f1e0',b:'#efe6cc',top:'whip',dr:null,straw:'#ddd',cup:'#fbfaf5'},
+  cookies:{a:'#8d7b72',b:'#6f5d55',top:'whip',dr:null,straw:'#222',cup:'#ddd',speck:'#2e2420',oreo:true},
+  strawberry:{a:'#f4b6c2',b:'#e2566f',top:'berry',dr:'#e2566f',straw:'#e2566f',cup:'#f8dde2',layer:true},
+  lotus:{a:'#f2dfb1',b:'#e9c97a',top:'lotus',dr:'#c8791f',straw:'#ddd',cup:'#fbf1d2'},
+  mocha:{a:'#a97b60',b:'#7b523c',top:'whip',dr:'#3b2118',straw:'#222',cup:'#e8ddd3',swirl:true},
+  strawmatcha:{a:'#e48aa0',b:'#8fb04a',top:'berry',dr:'#e2566f',straw:'#8fb04a',cup:'#f1f3ee',layer:true},
+  mango:{a:'#f7c33a',b:'#f2a416',top:'whip',dr:'#f2a416',straw:'#f2a416',cup:'#fdeab0'},
+  americano:{a:'#3a2418',b:'#2a170e',top:'none',dr:null,straw:'#222',cup:'#d9d2cb'},
+  latte:{a:'#d8b08a',b:'#b98558',top:'foam',dr:null,straw:'#222',cup:'#eee1d1'},
+  tea:{a:'#e7b03c',b:'#c98a1c',top:'lemon',dr:null,straw:'#e7b03c',cup:'#f7e9c5'},
+  peach:{a:'#f4a974',b:'#ec8a52',top:'none',dr:null,straw:'#ec8a52',cup:'#fbe0cf'},
+  milktea:{a:'#c9a07a',b:'#a97c55',top:'pearls',dr:null,straw:'#222',cup:'#eadcc9'},
+  greentea:{a:'#b7c46a',b:'#98a84a',top:'none',dr:null,straw:'#98a84a',cup:'#eef0d8'}
+};
+function cupSVG(t, id){
+  const s = STYLE[t] || STYLE.vanilla;
+  const u = 'c' + String(id).replace(/\W/g,'') + '_' + t;
+  let seed = 11; for(const ch of u) seed = (seed*33 + ch.charCodeAt(0)) % 2147483647;
+  const rnd = (a=0,b=1) => { seed = (seed*48271) % 2147483647; return a + (seed/2147483647)*(b-a) };
+  const f = n => (+n).toFixed(1);
+  const BODY = 'M46 100H154L139 256Q100 267 61 256Z';
+  const hasWhip = ['whip','matcha','berry','lotus'].includes(s.top);
+  const dir = ['caramel','javachip','vanilla','mocha'].includes(t) ? 1 : -1;
+  const dark = ['#222','#2a1a12'].includes(s.straw);
+
+  /* ---- liquid gradient ---- */
+  const topC = s.layer ? (t==='matcha' ? s.b : s.a) : s.b;
+  const botC = s.layer ? (t==='matcha' ? s.a : s.b) : s.a;
+  const liquid = s.layer
+    ? `<stop offset="0" stop-color="${topC}"/><stop offset=".34" stop-color="${topC}"/><stop offset=".6" stop-color="${botC}"/><stop offset="1" stop-color="${botC}"/>`
+    : `<stop offset="0" stop-color="${s.b}"/><stop offset="1" stop-color="${s.a}"/>`;
+
+  /* ---- inside-glass sauce drips ---- */
+  let drips = '';
+  if(s.dr && ['caramel','javachip','mocha','lotus','strawberry','mango'].includes(t)){
+    for(let i=0;i<10;i++){
+      const x = rnd(52,148), len = rnd(16,80), w = rnd(3,7.5), bend = rnd(-3,3);
+      const d = `M${f(x)} 101q${f(bend)} ${f(len/2)} ${f(bend/2)} ${f(len)}`;
+      drips += `<path d="${d}" stroke="${s.dr}" stroke-width="${f(w)}" stroke-linecap="round" fill="none" opacity=".95"/>`
+             + `<path d="${d}" transform="translate(-${f(w*.22)},0)" stroke="#fff" stroke-opacity=".3" stroke-width="${f(w*.28)}" stroke-linecap="round" fill="none"/>`;
+    }
+  }
+  const swirl = s.swirl ? `<path d="M70 118q8 36-2 84M104 110q10 44 0 96M134 122q-6 34 4 76" stroke="#2c170f" stroke-width="6" fill="none" stroke-linecap="round" opacity=".9"/><path d="M68 118q8 36-2 84M102 110q10 44 0 96" stroke="#fff" stroke-opacity=".22" stroke-width="1.6" fill="none"/>` : '';
+  const berry = s.top==='berry' ? `<path d="M46 222Q100 205 154 224L139 256Q100 267 61 256Z" fill="#c0203a" opacity=".85"/><path d="M52 226q20-8 40 0t44-2" stroke="#e3566e" stroke-width="3" fill="none" opacity=".7"/>` : '';
+
+  /* ---- specks (java chip / cookies) ---- */
+  let specks = '';
+  if(s.speck){
+    const n = t==='cookies' ? 80 : 52;
+    for(let i=0;i<n;i++){
+      const x = rnd(50,150), y = rnd(106,254), r = rnd(.8, t==='cookies'?3.2:2.5);
+      specks += `<circle cx="${f(x)}" cy="${f(y)}" r="${f(r)}" fill="${rnd()>.3 ? s.speck : '#e7dbd0'}" opacity="${f(rnd(.45,.9))}"/>`;
+    }
+  }
+  const pearls = s.top==='pearls' ? [...Array(18)].map((_,i)=>`<circle cx="${66+(i%9)*8.4}" cy="${i<9?240:249}" r="4.4" fill="#21130c"/><circle cx="${65+(i%9)*8.4}" cy="${i<9?238.5:247.5}" r="1.2" fill="#fff" opacity=".45"/>`).join('') : '';
+
+  /* ---- condensation ---- */
+  let cond = '';
+  for(let i=0;i<26;i++){
+    const x = rnd(52,148), y = rnd(112,250), r = rnd(.9,2.3);
+    cond += `<circle cx="${f(x)}" cy="${f(y)}" r="${f(r)}" fill="#fff" opacity=".22"/><circle cx="${f(x-r*.3)}" cy="${f(y-r*.3)}" r="${f(r*.4)}" fill="#fff" opacity=".7"/>`;
+  }
+
+  /* ---- ice (for non-whip drinks) ---- */
+  let ice = '';
+  if(['americano','latte','tea','peach','milktea','greentea'].includes(t)){
+    [[72,98],[101,93],[130,98]].forEach(([cx,cy])=>{
+      ice += `<g transform="rotate(${f(rnd(-22,22))} ${cx} ${cy})"><rect x="${cx-12}" y="${cy-12}" width="24" height="24" rx="5" fill="#fff" fill-opacity=".3" stroke="#fff" stroke-opacity=".75" stroke-width="1.2"/><path d="M${cx-8} ${cy-6}L${cx-2} ${cy-9}" stroke="#fff" stroke-width="2" opacity=".85"/></g>`;
+    });
+  }
+
+  /* ---- straw ---- */
+  const sx = 100 + dir*30;
+  const sw = t==='milktea' ? 9 : 7;
+  const straw = `<line x1="100" y1="102" x2="${sx}" y2="4" stroke="#000" stroke-opacity=".25" stroke-width="${sw+1.5}" stroke-linecap="round" transform="translate(2,2)"/>`
+    + `<line x1="100" y1="102" x2="${sx}" y2="4" stroke="${s.straw}" stroke-width="${sw}" stroke-linecap="round"/>`
+    + `<line x1="${f(100-dir*1.8)}" y1="102" x2="${f(sx-dir*1.8)}" y2="4" stroke="#fff" stroke-opacity="${dark?.35:.55}" stroke-width="1.6" stroke-linecap="round"/>`;
+
+  /* ---- whipped cream ---- */
+  const tiers = [
+    'M40 106C30 90 42 76 62 79C70 66 92 63 102 70C114 63 136 67 142 80C162 80 168 97 158 106C128 114 70 114 40 106Z',
+    'M55 82C50 67 66 57 83 61C91 48 114 48 122 61C140 59 148 74 137 85C112 91 80 91 55 82Z',
+    'M75 62C72 49 88 41 101 45C114 41 128 50 123 62C108 69 90 69 75 62Z',
+    'M91 46C90 34 102 31 104 20C112 30 120 38 113 48C106 53 97 52 91 46Z'
+  ];
+  const ridges = [
+    ['M50 97C66 105 86 99 94 89','M104 90C118 102 140 100 152 94'],
+    ['M64 79C76 87 96 81 100 69','M108 69C116 81 130 83 134 77'],
+    ['M82 59C90 65 104 63 108 53'],
+    ['M97 43C100 46 106 44 108 36']
+  ];
+  let whip = '';
+  if(hasWhip){
+    tiers.forEach((d,i)=>{
+      whip += `<path d="${d}" transform="translate(0,3)" fill="rgb(120,92,55)" opacity=".35"/>`
+            + `<path d="${d}" fill="url(#${u}W)" stroke="rgb(150,120,80)" stroke-opacity=".28" stroke-width=".9"/>`;
+      ridges[i].forEach(r=>{
+        whip += `<path d="${r}" fill="none" stroke="rgb(150,120,80)" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/>`
+              + `<path d="${r}" transform="translate(-1.3,-1.3)" fill="none" stroke="#fff" stroke-opacity=".85" stroke-width="1" stroke-linecap="round"/>`;
+      });
+    });
+    whip += `<ellipse cx="76" cy="86" rx="11" ry="3" transform="rotate(-12 76 86)" fill="#fff" opacity=".6"/><ellipse cx="96" cy="58" rx="9" ry="2.6" transform="rotate(-8 96 58)" fill="#fff" opacity=".6"/><ellipse cx="100" cy="35" rx="3.6" ry="1.6" transform="rotate(-50 100 35)" fill="#fff" opacity=".7"/>`;
+  }
+  /* sauce on whip */
+  let sauce = '';
+  const sc = s.dr;
+  if(hasWhip && sc && ['caramel','javachip','mocha','lotus','strawberry','mango'].includes(t)){
+    const strands = ['M48 98C64 108 82 92 98 100S130 106 152 94','M60 78C76 88 90 72 104 80S126 88 140 78','M80 60C92 68 106 56 118 62'];
+    strands.forEach((d,i)=>{
+      sauce += `<path d="${d}" transform="translate(0,1.5)" stroke="#000" stroke-opacity=".18" stroke-width="${i?3.6:4.6}" fill="none" stroke-linecap="round"/>`
+             + `<path d="${d}" stroke="${sc}" stroke-width="${i?3.4:4.4}" fill="none" stroke-linecap="round"/>`
+             + `<path d="${d}" transform="translate(-.8,-1)" stroke="#fff" stroke-opacity=".45" stroke-width="1.1" fill="none" stroke-linecap="round"/>`;
+    });
+  }
+  /* dust / crumbs on whip */
+  let dust = '';
+  if(hasWhip && (t==='matcha' || t==='strawberry' || t==='strawmatcha' || t==='cookies' || t==='javachip' || t==='vanilla')){
+    const col = t==='matcha' ? '#5f8f26' : (t==='strawberry'||t==='strawmatcha') ? '#d2283e' : t==='vanilla' ? '#5b4a38' : '#2a1d18';
+    const n = t==='vanilla' ? 10 : t==='matcha' ? 46 : 26;
+    for(let i=0;i<n;i++){
+      const a = rnd(0,6.283), rr = Math.sqrt(rnd()), x = 100 + Math.cos(a)*rr*52, y = 76 + Math.sin(a)*rr*22;
+      dust += `<circle cx="${f(x)}" cy="${f(y)}" r="${f(rnd(.7,t==='cookies'||t==='javachip'?2.4:1.5))}" fill="${col}" opacity="${f(rnd(.5,.9))}"/>`;
+    }
+  }
+
+  /* ---- toppings ---- */
+  let extra = '';
+  if(s.top==='berry'){
+    extra += `<g transform="rotate(8 118 44)"><path d="M103 32C104 24 128 24 131 33C131 48 120 60 117 60C113 58 102 46 103 32Z" fill="url(#${u}S)"/><path d="M108 34q-2 10 4 18" stroke="#fff" stroke-opacity=".5" stroke-width="2.2" fill="none" stroke-linecap="round"/>`
+      + [...Array(9)].map((_,i)=>`<ellipse cx="${108+(i%3)*8+(Math.floor(i/3)%2)*3}" cy="${36+Math.floor(i/3)*7}" rx="1" ry="1.5" fill="#f5e08a"/>`).join('')
+      + `<path d="M109 30l5-5 3 4 4-5 3 6 5-1-4 6z" fill="#2f8b45"/></g>`;
+  }
+  if(s.top==='lotus'){
+    extra += `<g transform="rotate(16 112 40)"><rect x="86" y="18" width="52" height="38" rx="7" fill="#c78236" stroke="#8f5516" stroke-width="1.5"/>`
+      + `<rect x="89" y="21" width="46" height="32" rx="5" fill="#d9993f"/>`
+      + [0,1,2,3,4].map(i=>`<path d="M${95+i*9} 22v30" stroke="#b46f27" stroke-width="1.4" opacity=".7"/>`).join('')
+      + [...Array(22)].map(()=>`<circle cx="${f(rnd(90,134))}" cy="${f(rnd(23,51))}" r="${f(rnd(.5,1.2))}" fill="#9b5f1f" opacity=".7"/>`).join('')
+      + `<path d="M91 23h40" stroke="#fff" stroke-opacity=".35" stroke-width="2" stroke-linecap="round"/></g>`
+      + [...Array(10)].map(()=>`<circle cx="${f(rnd(62,150))}" cy="${f(rnd(70,96))}" r="${f(rnd(.9,2))}" fill="#c78236" opacity=".85"/>`).join('');
+  }
+  if(t==='cookies'){
+    extra += `<g transform="rotate(24 140 54)"><circle cx="140" cy="54" r="18" fill="#2a211d" stroke="#120d0a" stroke-width="1.2"/><circle cx="140" cy="54" r="10.5" fill="#efe9de"/><circle cx="140" cy="54" r="10.5" fill="none" stroke="#cfc7b8" stroke-width="1"/>`
+      + [...Array(10)].map((_,i)=>`<circle cx="${f(140+Math.cos(i*.628)*14.5)}" cy="${f(54+Math.sin(i*.628)*14.5)}" r="1" fill="#4a3d36"/>`).join('')
+      + `<path d="M126 48q6-9 16-9" stroke="#fff" stroke-opacity=".28" stroke-width="2" fill="none" stroke-linecap="round"/></g>`;
+  }
+  if(s.top==='foam'){
+    extra += `<ellipse cx="100" cy="101" rx="55" ry="7" fill="#f4e8d6"/><ellipse cx="100" cy="101" rx="44" ry="5" fill="#cfa77c"/><path d="M100 97q-8 4 0 8 8-4 0-8z" fill="#f4e8d6"/>`;
+  }
+  if(s.top==='lemon'){
+    extra += `<g transform="rotate(-18 138 98)"><circle cx="138" cy="98" r="17" fill="#f6dc4a" stroke="#d9b92d" stroke-width="2"/><circle cx="138" cy="98" r="13.5" fill="#fbeb86"/>`
+      + [0,1,2,3,4,5].map(i=>`<path d="M138 98L${f(138+Math.cos(i*1.047)*13)} ${f(98+Math.sin(i*1.047)*13)}" stroke="#f0cf3a" stroke-width="1.6"/>`).join('') + `</g>`;
+  }
+  if(!hasWhip && !['foam'].includes(s.top)){
+    /* liquid surface for open-top drinks */
+    extra = `<ellipse cx="100" cy="101" rx="54" ry="6.5" fill="${s.b}"/><ellipse cx="100" cy="101" rx="54" ry="6.5" fill="#000" opacity=".15"/>` + extra;
+  }
+
+  return `<svg viewBox="0 0 200 270" role="img" aria-label="${t}">
+    <defs>
+      <linearGradient id="${u}L" x1="0" y1="0" x2="0" y2="1">${liquid}</linearGradient>
+      <linearGradient id="${u}V" gradientUnits="userSpaceOnUse" x1="46" y1="0" x2="154" y2="0">
+        <stop offset="0" stop-color="#000" stop-opacity=".32"/><stop offset=".18" stop-color="#fff" stop-opacity=".16"/>
+        <stop offset=".5" stop-color="#fff" stop-opacity="0"/><stop offset=".82" stop-color="#000" stop-opacity=".16"/><stop offset="1" stop-color="#000" stop-opacity=".4"/>
+      </linearGradient>
+      <radialGradient id="${u}W" cx=".35" cy=".28" r=".9"><stop offset="0" stop-color="#fffefb"/><stop offset=".5" stop-color="#f6eddd"/><stop offset="1" stop-color="#d8caae"/></radialGradient>
+      <radialGradient id="${u}S" cx=".35" cy=".3" r=".9"><stop offset="0" stop-color="#ff5a6e"/><stop offset=".6" stop-color="#d2283e"/><stop offset="1" stop-color="#8f1428"/></radialGradient>
+      <clipPath id="${u}K"><path d="${BODY}"/></clipPath>
+      <filter id="${u}B" x="-20%" y="-50%" width="140%" height="200%"><feGaussianBlur stdDeviation="3"/></filter>
+      <filter id="${u}R" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="4" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.6"/></filter>
+    </defs>
+    <ellipse cx="102" cy="262" rx="58" ry="6" fill="#000" opacity=".4" filter="url(#${u}B)"/>
+    ${hasWhip ? straw : ''}
+    <path d="${BODY}" fill="${s.cup}" fill-opacity=".92"/>
+    <g clip-path="url(#${u}K)">
+      <rect x="40" y="96" width="120" height="176" fill="url(#${u}L)"/>
+      ${berry}${drips}${specks}${swirl}${pearls}${cond}
+      <rect x="40" y="96" width="120" height="176" fill="url(#${u}V)"/>
+      <path d="M53 104L60 104L72 250L65 250Z" fill="#fff" opacity=".3"/>
+      <path d="M146 104L150 104L141 248L138 248Z" fill="#fff" opacity=".18"/>
+      <path d="M61 256Q100 267 139 256L137 238Q100 249 63 238Z" fill="#000" opacity=".16"/>
+    </g>
+    <path d="${BODY}" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="1.4"/>
+    <ellipse cx="100" cy="100" rx="55" ry="6.5" fill="#fff" fill-opacity=".3" stroke="#fff" stroke-opacity=".7" stroke-width="1.2"/>
+    ${hasWhip ? '' : extra.includes('ellipse cx="100" cy="101"') ? '' : ''}
+    ${!hasWhip ? extra : ''}
+    ${!hasWhip ? ice : ''}
+    ${!hasWhip ? straw : ''}
+    ${hasWhip ? `<g filter="url(#${u}R)">${whip}</g>${sauce}${dust}${extra}` : ''}
+  </svg>`;
+}
+
+/* ============ MENU rendering ============ */
+/* Photo for each drink: images/<slug>.png  e.g. "Cookies & Cream" -> images/cookies-and-cream.png */
+const slug = n => n.toLowerCase().replace(/&/g,'and').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+let curSeries = 'Frappe';
+let query = '';
+function renderSidebar(){
+  $('#sidebar').innerHTML = Object.keys(SERIES).map(k =>
+    `<button data-s="${k}" class="${!query && k===curSeries?'active':''}">${k.replace(' Series',' <br>Series').replace('White Choco Series','WHITE CHOCO<br>SERIES')}</button>`).join('');
+}
+function renderMenu(){
+  renderSidebar();
+  let items;
+  if(query){
+    items = [];
+    Object.entries(SERIES).forEach(([cat,list]) => list.forEach(it => {
+      if((it.n+' '+cat).toLowerCase().includes(query)) items.push({...it, cat});
+    }));
+  } else items = SERIES[curSeries].map(it => ({...it, cat:curSeries}));
+  $('#grid').innerHTML = items.length ? items.map((it,i) => `
+    <button class="item" data-add="${it.cat}|${it.n}" aria-label="Add ${it.n} to order">
+      <div class="pic" data-t="${it.t}" data-id="m${i}"><img src="images/${slug(it.n)}.png" alt="${it.n}" loading="lazy" onerror="this.parentNode.innerHTML=cupSVG(this.parentNode.dataset.t,this.parentNode.dataset.id)"></div>
+      <div class="price">₱ ${it.p}</div>
+      <div class="name">${it.n}</div>
+      <span class="add">+ Add to order</span>
+    </button>`).join('') : `<div class="empty">No drinks found for “${query.replace(/</g,'&lt;')}”.</div>`;
+}
+$('#sidebar').addEventListener('click', e => {
+  const b = e.target.closest('button[data-s]'); if(!b) return;
+  curSeries = b.dataset.s; query=''; $('#search').value=''; renderMenu(); window.scrollTo(0,0);
+});
+$('#search').addEventListener('input', e => {
+  query = e.target.value.trim().toLowerCase();
+  if((location.hash||'#home') !== '#menu'){ location.hash = '#menu' } else renderMenu();
+});
+$('#search').addEventListener('keydown', e => { if(e.key==='Enter'){ e.preventDefault(); if(location.hash!=='#menu') location.hash='#menu' } });
+
+/* ============ CART ============ */
+let cart = store.get('cart', {});
+function findItem(key){ const [c,n]=key.split('|'); return (SERIES[c]||[]).find(i=>i.n===n) }
+function saveCart(){ store.set('cart', cart); renderCart() }
+function renderCart(){
+  const keys = Object.keys(cart); const count = keys.reduce((a,k)=>a+cart[k],0);
+  $('#cartN').textContent = count; $('#cartFab').classList.toggle('on', count>0);
+  let total = 0;
+  $('#cartLines').innerHTML = keys.length ? keys.map(k => {
+    const it = findItem(k); if(!it) return ''; total += it.p*cart[k];
+    return `<div class="line"><div class="nm">${it.n}<small>₱ ${it.p} each</small></div>
+      <div class="qty"><button data-q="-1|${k}" aria-label="Less">−</button><span>${cart[k]}</span><button data-q="1|${k}" aria-label="More">+</button></div></div>`;
+  }).join('') : '<p style="color:#bfb0a6;padding:20px 0">Your order is empty.</p>';
+  $('#cartTotal').textContent = '₱' + total;
+}
+$('#grid').addEventListener('click', e => {
+  const b = e.target.closest('[data-add]'); if(!b) return;
+  const k = b.dataset.add; cart[k] = (cart[k]||0)+1; saveCart(); toast(k.split('|')[1]+' added to your order');
+});
+$('#cartLines').addEventListener('click', e => {
+  const b = e.target.closest('[data-q]'); if(!b) return;
+  const [d,k] = b.dataset.q.split('|'); cart[k] = (cart[k]||0) + (+d);
+  if(cart[k]<=0) delete cart[k]; saveCart();
+});
+const openDrawer = v => { $('#drawer').classList.toggle('open', v); $('#overlay').classList.toggle('on', v) };
+$('#cartFab').onclick = () => openDrawer(true);
+$('#closeDrawer').onclick = () => openDrawer(false);
+$('#checkout').onclick = () => {
+  if(!Object.keys(cart).length) return toast('Add a drink first.');
+  const user = store.get('user', null);
+  if(!user){ openDrawer(false); toast('Please sign in with your phone number to place an order.'); location.hash='#account'; return }
+  const total = Object.keys(cart).reduce((a,k)=>a+(findItem(k)?.p||0)*cart[k],0);
+  const earned = Math.max(1, Math.floor(total/100));
+  const rw = store.get('rewards', {points:0,streak:0,last:''}); rw.points += earned; store.set('rewards', rw);
+  cart = {}; saveCart(); openDrawer(false);
+  toast(`Order placed! You earned ${earned} reward point${earned>1?'s':''}.`);
+};
+
+/* ============ REWARDS ============ */
+const DAYPTS = [1,1,1,2,2,3,21];
+const MAXPTS = 50;
+const todayStr = () => new Date().toDateString();
+function renderRewards(){
+  const user = store.get('user', null);
+  const rw = store.get('rewards', {points:0,streak:0,last:''});
+  $('#ptsNum').textContent = rw.points;
+  $('#arcFill').setAttribute('stroke-dashoffset', 100 - Math.min(100, rw.points/MAXPTS*100));
+  const claimedToday = rw.last === todayStr();
+  $('#days').innerHTML = DAYPTS.map((p,i) => {
+    const done = i < rw.streak, isToday = i===rw.streak && !claimedToday;
+    return `<button class="day ${done?'done':''} ${isToday?'today':''}" data-day="${i}" ${isToday?'':'disabled'} aria-label="Day ${i+1}: ${p} points">
+      <div class="bean"><svg viewBox="0 0 80 80"><ellipse class="b" cx="40" cy="40" rx="39" ry="38" fill="#6e4222"/><path d="M14 56C32 40 50 26 66 14" stroke="#a37a52" stroke-width="3" fill="none" opacity=".7"/></svg><span>${p} ${p===1?'PT':'PTS'}</span></div>
+      DAY ${i+1}</button>`;
+  }).join('');
+  $('#hint').textContent = !user ? 'Sign in on the Account page to start collecting points.'
+    : claimedToday ? 'Checked in for today — come back tomorrow!' : `Tap Day ${rw.streak+1} to claim ${DAYPTS[rw.streak]} point${DAYPTS[rw.streak]>1?'s':''}.`;
+}
+$('#days').addEventListener('click', e => {
+  const b = e.target.closest('[data-day]'); if(!b) return;
+  if(!store.get('user', null)){ toast('Please sign in to check in.'); location.hash='#account'; return }
+  const rw = store.get('rewards', {points:0,streak:0,last:''});
+  if(rw.last === todayStr()) return;
+  const pts = DAYPTS[rw.streak]; rw.points += pts; rw.streak += 1; rw.last = todayStr();
+  if(rw.streak >= DAYPTS.length) rw.streak = 0;           // cycle restarts after day 7
+  store.set('rewards', rw); renderRewards(); toast(`+${pts} point${pts>1?'s':''}! Daily check-in complete.`);
+});
+
+/* ============ ACCOUNT (phone login) ============ */
+const COUNTRIES = [
+  {c:'PH', d:'+63', n:'Philippines', len:10},
+  {c:'US', d:'+1',  n:'United States', len:10},
+  {c:'SG', d:'+65', n:'Singapore', len:8},
+  {c:'JP', d:'+81', n:'Japan', len:10},
+  {c:'AU', d:'+61', n:'Australia', len:9}
+];
+let acc = {step:'phone', country:COUNTRIES[0], phone:'', code:''};
+const phFlag = `<svg viewBox="0 0 54 38" width="54" height="38"><rect width="54" height="19" fill="#0b3fb8"/><rect y="19" width="54" height="19" fill="#d0112b"/><path d="M0 0l30 19L0 38z" fill="#fff"/><circle cx="9" cy="19" r="4.5" fill="#f7cf2a"/></svg>`;
+const flagFor = c => c.c==='PH' ? phFlag : c.c;
+function renderAccount(){
+  const box = $('#accBox'); const user = store.get('user', null);
+  const cup = `<svg class="logo-cup" viewBox="0 0 170 180" aria-hidden="true"><path d="M70 6c-14 14 14 26 0 42M98 2c-14 16 14 30 0 48" stroke="#c49a74" stroke-width="7" fill="none" stroke-linecap="round"/><path d="M18 92h124q0 52-44 62H62Q18 144 18 92z" fill="#c09560"/><path d="M142 100q26-2 22 20t-34 24" stroke="#c09560" stroke-width="10" fill="none"/><ellipse cx="82" cy="164" rx="76" ry="14" fill="none" stroke="#c09560" stroke-width="9"/><ellipse cx="82" cy="164" rx="48" ry="7" fill="none" stroke="#c09560" stroke-width="6"/><path d="M30 92q40-22 106-2" stroke="#63301f" stroke-width="3" fill="none" opacity=".4"/></svg>`;
+  if(user){
+    const rw = store.get('rewards', {points:0});
+    box.innerHTML = `${cup}<div class="profile"><h2>Welcome back!</h2><div class="num">${user.d} ${user.phone}</div><div class="pts">${rw.points} reward points</div>
+      <button class="btn" style="width:275px" data-go="rewards">View Rewards</button><br><button class="btn ghost" style="width:275px" id="signout">Sign Out</button></div>`;
+    $('#signout').onclick = () => { localStorage.removeItem('user'); acc={step:'phone',country:COUNTRIES[0],phone:'',code:''}; toast('Signed out.'); renderAccount() };
+    return;
+  }
+  if(acc.step==='phone'){
+    box.innerHTML = `${cup}<h2>Enter your phone number</h2>
+      <div class="phone"><button class="cc" id="ccBtn" aria-haspopup="listbox"><span class="flag">${flagFor(acc.country)}</span><span>${acc.country.d}</span>
+        <svg width="18" height="10" viewBox="0 0 18 10" fill="none" stroke="#fff" stroke-width="1.6"><path d="M1 1l8 7 8-7"/></svg></button>
+        <ul class="ccmenu" id="ccMenu">${COUNTRIES.map((c,i)=>`<li data-i="${i}"><span>${c.c}</span> ${c.n} <b>${c.d}</b></li>`).join('')}</ul>
+        <input id="phoneIn" type="tel" inputmode="numeric" autocomplete="tel-national" maxlength="12" value="${acc.phone}" aria-label="Phone number"></div>
+      <div class="err" id="err"></div>
+      <div class="divider">receive 4-digit code via</div>
+      <button class="chan" data-ch="SMS">SMS</button>
+      <button class="chan" data-ch="Viber">Viber</button>`;
+    $('#ccBtn').onclick = e => { e.stopPropagation(); $('#ccMenu').classList.toggle('on') };
+    $('#ccMenu').onclick = e => { const li=e.target.closest('li'); if(!li) return; acc.country=COUNTRIES[+li.dataset.i]; acc.phone=$('#phoneIn').value; renderAccount() };
+    $('#phoneIn').oninput = e => { e.target.value = e.target.value.replace(/\D/g,''); acc.phone = e.target.value };
+    $$('.chan').forEach(b => b.onclick = () => {
+      let ph = acc.phone.replace(/^0+/,'');
+      if(ph.length !== acc.country.len){ $('#err').textContent = `Please enter a valid ${acc.country.len}-digit mobile number (without the leading 0).`; $('#phoneIn').focus(); return }
+      acc.phone = ph; acc.code = String(Math.floor(1000+Math.random()*9000)); acc.step='code'; acc.channel=b.dataset.ch; renderAccount();
+      toast(`Demo mode: your ${b.dataset.ch} code is ${acc.code} (no SMS/Viber gateway is connected to this static site).`);
+    });
+  } else {
+    box.innerHTML = `${cup}<h2>Enter the 4-digit code</h2>
+      <p class="sub">Sent via ${acc.channel} to ${acc.country.d} ${acc.phone}</p>
+      <div class="codeboxes">${[0,1,2,3].map(i=>`<input inputmode="numeric" maxlength="1" data-i="${i}" aria-label="Digit ${i+1}">`).join('')}</div>
+      <div class="err" id="err"></div>
+      <button class="chan" id="verify">Verify</button>
+      <button class="linkbtn" id="back">Change number</button>`;
+    const ins = $$('.codeboxes input'); ins[0].focus();
+    ins.forEach((inp,i) => {
+      inp.oninput = () => { inp.value = inp.value.replace(/\D/g,''); if(inp.value && ins[i+1]) ins[i+1].focus(); if(ins.every(x=>x.value)) verify() };
+      inp.onkeydown = e => { if(e.key==='Backspace' && !inp.value && ins[i-1]) ins[i-1].focus() };
+    });
+    function verify(){
+      const v = ins.map(x=>x.value).join('');
+      if(v===acc.code){ store.set('user',{d:acc.country.d,phone:acc.phone}); acc.step='phone'; toast('Signed in successfully!'); renderAccount() }
+      else { $('#err').textContent = 'Incorrect code. Please try again.'; ins.forEach(x=>x.value=''); ins[0].focus() }
+    }
+    $('#verify').onclick = verify;
+    $('#back').onclick = () => { acc.step='phone'; renderAccount() };
+  }
+}
+document.addEventListener('click', e => { const m=$('#ccMenu'); if(m && !e.target.closest('.phone')) m.classList.remove('on') });
+
+/* ============ CONTACT ============ */
+const openContact = v => { $('#contactModal').classList.toggle('on', v); $('#overlay').classList.toggle('on', v) };
+$('#contactBtn').onclick = () => openContact(true);
+$('#closeContact').onclick = () => openContact(false);
+$('#contactForm').addEventListener('submit', e => {
+  e.preventDefault(); openContact(false); e.target.reset();
+  toast('This page has no mail server, so nothing was sent. Please email hello@coffeeshop.example.');
+});
+$('#overlay').onclick = () => { openContact(false); openDrawer(false) };
+document.addEventListener('keydown', e => { if(e.key==='Escape'){ openContact(false); openDrawer(false) } });
+
+/* ============ init ============ */
+renderCart();
+route();
+</script>
+
+
+</body></html>
